@@ -1,0 +1,29 @@
+# addadollar.com - systemd service
+# Installed by deploy.sh as /etc/systemd/system/addadollar.service
+
+[Unit]
+Description=addadollar.com (Node.js app)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=addadollar
+Group=addadollar
+WorkingDirectory=/var/www/addadollar
+# The app reads its settings (Stripe keys, etc.) from /var/www/addadollar/.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+
+# Hardening: the app can only write to its own data folder
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/addadollar/data
+ProtectKernelTunables=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target

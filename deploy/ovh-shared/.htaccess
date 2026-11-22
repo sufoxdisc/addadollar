@@ -1,0 +1,21 @@
+# addadollar.com - .htaccess for OVHcloud shared web hosting (Apache), folder "www"
+#
+# IMPORTANT: shared hosting can't run the Node.js server that Stripe payments need.
+# This file only forces HTTPS and the bare domain for whatever static files are in "www".
+# Before using it, enable the free SSL certificate for BOTH addadollar.com and
+# www.addadollar.com in the OVHcloud Manager (Web hosting > Multisite / SSL).
+
+RewriteEngine On
+
+# 1. Any plain-HTTP request -> 301 to https on the bare domain
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://addadollar.com/$1 [L,R=301]
+
+# 2. www -> bare domain, still over https (301)
+RewriteCond %{HTTP_HOST} ^www\.addadollar\.com$ [NC]
+RewriteRule ^(.*)$ https://addadollar.com/$1 [L,R=301]
+
+# 3. HSTS (needs mod_headers). No includeSubDomains, so mail subdomains are unaffected.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>

@@ -1,0 +1,36 @@
+# addadollar.com - Caddy configuration (recommended: automatic Let's Encrypt certificates)
+#
+# What this does:
+#   - http://addadollar.com and http://www.addadollar.com  -> 301 to https://addadollar.com
+#   - https://www.addadollar.com                           -> 301 to https://addadollar.com
+#   - https://addadollar.com                               -> the Node app on 127.0.0.1:3000
+# Caddy gets and renews the Let's Encrypt certificates by itself. The A records for
+# "@" and "www" must already point at this server, or issuance keeps retrying until they do.
+#
+# deploy.sh installs this as /etc/caddy/conf.d/addadollar.caddy and makes sure the main
+# /etc/caddy/Caddyfile imports /etc/caddy/conf.d/*.caddy. If you use it by hand,
+# edit the domain, the port and the e-mail below.
+
+# Explicit http:// blocks make Caddy use a permanent 301 (its automatic redirect is a 308).
+# Certificate challenges still work: Caddy answers them before these routes.
+http://addadollar.com, http://www.addadollar.com {
+	redir https://addadollar.com{uri} 301
+}
+
+https://www.addadollar.com {
+	redir https://addadollar.com{uri} 301
+}
+
+https://addadollar.com {
+	tls __EMAIL__
+
+	encode zstd gzip
+
+	# Caddy sends X-Forwarded-For / -Proto / -Host to the app by default.
+	# The app is configured with TRUST_PROXY=1 to read them.
+	reverse_proxy 127.0.0.1:3000
+
+	header {
+		-Server
+	}
+}

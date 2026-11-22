@@ -1,0 +1,50 @@
+{
+  "nextId": 5,
+  "layers": [
+    {
+      "id": 1,
+      "html": "<input type=\"checkbox\" id=\"t\"><label for=\"t\">Click me!</label><div class=\"b\">Hello, canvas!</div><style>input{display:none}label{display:inline-block;margin:20px;padding:8px 14px;border:2px solid #000;background:#eee;font:bold 14px Verdana;cursor:pointer}.b{margin:0 20px;padding:14px;border:2px solid #000;background:#fff;font:14px Verdana;transition:.3s}input:checked~.b{background:#ff0;transform:rotate(-4deg)}</style>",
+      "x": 12,
+      "y": 16,
+      "size": 350,
+      "price": 1,
+      "createdAt": "2026-11-22T19:07:02.219Z",
+      "seed": true
+    },
+    {
+      "id": 2,
+      "html": "<div class=\"w\"><span></span><span></span><span></span></div><style>.w{margin:120px 50px;display:flex;gap:10px}.w span{width:30px;height:30px;background:#0055FF;animation:b 1s ease-in-out infinite}.w span:nth-child(2){animation-delay:.2s}.w span:nth-child(3){animation-delay:.4s}@keyframes b{50%{transform:translateY(-50px);background:#f50}}</style>",
+      "x": 82,
+      "y": 22,
+      "size": 350,
+      "price": 1,
+      "createdAt": "2026-11-22T19:07:02.228Z",
+      "seed": true
+    },
+    {
+      "id": 3,
+      "html": "<input type=\"radio\" name=\"c\" id=\"r\" checked=\"\"><label for=\"r\">Red</label><input type=\"radio\" name=\"c\" id=\"u\"><label for=\"u\">Blue</label><i></i><style>input{display:none}label{display:inline-block;margin:10px 4px 0;padding:6px 10px;border:1px solid #000;font:12px Verdana;cursor:pointer}i{display:block;margin:14px;width:120px;height:120px;background:#c00;animation:p 2s infinite}#u:checked~i{background:#05f}@keyframes p{50%{border-radius:50%}}</style>",
+      "x": 14,
+      "y": 82,
+      "size": 350,
+      "price": 1,
+      "createdAt": "2026-11-22T19:07:02.237Z",
+      "seed": true
+    },
+    {
+      "id": 4,
+      "html": "<center><h2>House Rules</h2><hr><ul><li>Keep it fun</li><li>No scripts</li><li>Be nice</li></ul></center><style>h2{font:bold 22px Verdana;margin:20px 0 6px}ul{display:inline-block;text-align:left;font:13px Verdana;animation:f 3s infinite}@keyframes f{50%{opacity:.35}}</style>",
+      "x": 86,
+      "y": 80,
+      "size": 350,
+      "price": 1,
+      "createdAt": "2026-11-22T19:07:02.246Z",
+      "seed": true
+    }
+  ],
+  "seedVersion": 4,
+  "pending": {},
+  "payments": [],
+  "events": [],
+  "flagged": []
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>addadollar.com</title>
+  <meta name="description" content="Write a little HTML/CSS and put it on the wall for $1 or $3. Half of every dollar goes to charity.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Top bar: site name on the left, charity total on the right -->
+  <header id="topbar">
+    <div class="brand">
+      <a class="name" href="/">addadollar.com</a>
+      <a class="by" href="/contact" title="Contact">by <span class="sufox">sufox</span></a>
+    </div>
+    <div id="stats" class="mono" aria-live="polite">Charity Donations: …</div>
+    <button id="helpBtn" class="btn" type="button" title="About this project" aria-label="About this project">?</button>
+  </header>
+
+  <noscript><p class="noscript">This site needs JavaScript to show the wall and the editor.</p></noscript>
+
+  <!-- The canvas (scrollable on phones) -->
+  <main id="wall" aria-label="Collaborative canvas">
+    <div id="stage"></div>
+  </main>
+
+  <!-- Main call to action -->
+  <button id="ctaBtn" type="button">Customize the background for $1</button>
+
+  <!-- Contact card (only shown on /contact, over the live canvas) -->
+  <aside id="contactCard" class="hidden" aria-label="Contact">
+    <div class="cc-mail">Contact : <a href="mailto:sufox@addadollar.com">sufox@addadollar.com</a></div>
+    <a class="btn" href="/">Back to the canvas</a>
+  </aside>
+
+  <!-- Welcome modal -->
+  <div id="welcome" class="overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="modal">
+      <h1 id="welcomeTitle">addadollar.com</h1>
+      <p class="lead">A shared canvas. The background of this site is written by whoever shows up.</p>
+      <ol class="points">
+        <li><span class="num">1</span><div><strong>Try it for free.</strong> Write some HTML/CSS and see it live on the canvas before you spend a cent.</div></li>
+        <li><span class="num">2</span><div><strong>Publish for $1 or $3.</strong> One-time payment, no subscription. $1 gets you a 350 × 350 px block, $3 gets you 500 × 500 px.</div></li>
+        <li><span class="num">3</span><div><strong>Half goes to charity.</strong> 50% of every payment is donated, and the other 50% pays for servers and development.</div></li>
+      </ol>
+      <button id="exploreBtn" class="btn blue wide" type="button">Check out the canvas</button>
+    </div>
+  </div>
+
+  <!-- Full-screen editor -->
+  <section id="editor" class="hidden" aria-label="Layer editor">
+    <header class="ed-head">
+      <strong>Layer Editor</strong>
+      <span class="ed-sub">Your block shows up live on the canvas.</span>
+    </header>
+
+    <div class="ed-main">
+
+      <!-- Left column: the code -->
+      <div class="ed-code">
+        <fieldset class="sizes">
+          <legend>Size</legend>
+          <label><input type="radio" name="size" value="350" checked> 350×350 px ($1) <span class="dim">· 500 characters max</span></label>
+          <label><input type="radio" name="size" value="500"> 500×500 px ($3) <span class="dim">· 900 characters max</span></label>
+        </fieldset>
+
+        <div class="label">Published layers <span class="dim">(read-only)</span></div>
+        <div id="lockedLayers" class="locked-list"></div>
+
+        <div class="label" id="yourLayerLabel">/* Your Layer - Max 500 characters */</div>
+        <textarea id="code" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" placeholder="&lt;div class=&quot;me&quot;&gt;Hi there&lt;/div&gt;&#10;&lt;style&gt;.me{color:#0055FF}&lt;/style&gt;"></textarea>
+        <div id="counter" class="counter mono"><span id="charCount">0</span> / <span id="charMax">500</span></div>
+        <p class="hint">Allowed: div, span, p, h1–h3, b, i, strong, em, br, hr, center, ul, ol, li, label, input (checkbox or radio only), style, and basic SVG shapes. No scripts, links, images or external files.</p>
+
+        <div class="pos">
+          <label>X <input id="posX" type="range" min="0" max="100" step="0.5" value="50"> <output id="posXOut" class="mono">50%</output></label>
+          <label>Y <input id="posY" type="range" min="0" max="100" step="0.5" value="50"> <output id="posYOut" class="mono">50%</output></label>
+        </div>
+      </div>
+
+      <!-- Right column: live preview on the real canvas, to scale -->
+      <div class="ed-preview">
+        <div class="pv-label">
+          <span>Live preview <span class="dim">· drag the blue frame or tap the canvas</span></span>
+          <label class="try"><input id="tryMode" type="checkbox"> Click mode <span class="dim">(test your checkboxes and labels)</span></label>
+        </div>
+        <div id="previewPane">
+          <div id="previewScaler">
+            <div id="previewStage"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="ed-foot">
+      <button id="homeBtn" class="btn" type="button">Back to home</button>
+      <button id="applyBtn" class="btn blue" type="button">Apply &amp; continue ($1)</button>
+    </footer>
+  </section>
+
+  <!-- Order summary + simulated payment -->
+  <div id="checkout" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal">
+      <h2 id="checkoutTitle">Order summary</h2>
+      <table class="recap">
+        <tr><th>Size</th><td id="recapPlan">Standard · 350 × 350 px</td></tr>
+        <tr><th>Price</th><td><strong id="recapPrice">$1.00</strong> (one-time)</td></tr>
+        <tr><th>Charity (50%)</th><td id="recapCharity">$0.50</td></tr>
+        <tr><th>Servers &amp; development (50%)</th><td id="recapDev">$0.50</td></tr>
+      </table>
+      <p id="recapNote" class="muted">Your code goes through an automatic security check and content moderation before it goes live. No subscription. You'll pay on Stripe's secure checkout page, and your block goes live as soon as the payment is confirmed.</p>
+      <div id="checkoutError" class="error hidden" role="alert"></div>
+      <div class="row">
+        <button id="backBtn" class="btn" type="button">Back to editor</button>
+        <button id="payBtn" class="btn blue" type="button">Continue to secure payment ($1.00)</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
